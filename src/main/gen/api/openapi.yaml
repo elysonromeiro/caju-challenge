@@ -1,0 +1,50 @@
+openapi: 3.1.0
+info:
+  description: challenge API
+  title: challenge API
+  version: 1.0.0
+servers:
+- url: https://challenge
+paths:
+  /v1/users:
+    post:
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: OK
+      summary: POST v1/users
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Password:
+      properties: {}
+      type: object
+    User:
+      example:
+        password: "{}"
+        name: name
+        id: id
+        email: email
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          properties: {}
+          type: object
+      required:
+      - email
+      - name
+      - password
+
