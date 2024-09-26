@@ -25,9 +25,6 @@
 > [!WARNING]
 > Sobre testes automatizados: Por questão do prazo, não tive tempo hábil finalizar a cobertura em que gostaria e acharia justo para o desafio (em torno de 95% de cobertura), mas deixei alguns testes unitários  implementados. Além disso, gostaria de ter implementado testes de integração e testes de api, que acharia justo para o cargo também, porém não consegui a tempo.  
 
-
-### Cobertura em testes unitários
-
 ## Tecnologias utilizadas
 
 - **Kotlin**
@@ -52,7 +49,9 @@ Execute o comando `./gradlew test`
 
 ## Cobertura
 
-Execute o comando `./gradlew test jacocoTestReport` e verifique o arquivo `build\coverage\index.html`
+Execute o comando `./gradlew test jacocoTestReport` e verifique o arquivo `build\coverage\index.html`. Segue cobertura atual
+
+![image](https://github.com/user-attachments/assets/a8a9cabb-e43a-49d4-bf61-9d84111a75b7)
 
 
 ## Como rodar o projeto
@@ -96,4 +95,5 @@ Com a mensagem publicada em um tópico com configuração FIFO, cada transação
 Após isso, seria muito importante avisar aos clients via implementação de webhooks e status final da transação, visto que eles receberam uma transação com status pendente. Uma vez que temos webhooks, o client entenderá que a transação foi finalizada e qual seu status final, podendo prosseguir com a autorização do seu lado.
 
 
-Segue um diagrama representando essa solução
+![image](https://github.com/user-attachments/assets/2c2556c4-bf76-44af-9b9d-c9ec348a6d60)
+
