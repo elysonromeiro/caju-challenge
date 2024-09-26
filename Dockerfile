@@ -1,19 +1,28 @@
-FROM gradle:7.6-jdk17 AS build
+FROM gradle:7.6.0-jdk17 AS build
 
 WORKDIR /app
 
-COPY build.gradle.kts settings.gradle.kts /app/
-COPY src /app/src
+COPY . .
 
-RUN gradle build --no-daemon
+RUN gradle build -x test
 
-FROM openjdk:17-jdk-slim
+FROM amazoncorretto:17 AS runner
+
+WORKDIR /app
 
 ARG JWT_SECRET
 ENV JWT_SECRET=$JWT_SECRET
 
-WORKDIR /app
-COPY --from=build /app/build/libs/*.jar /app/app.jar
+ARG DB_URL
+ENV DB_URL=$DB_URL
+
+ARG DB_USER
+ENV DB_USER=$DB_USER
+
+ARG DB_PASSWORD
+ENV DB_PASSWORD=$DB_PASSWORD
+
+COPY --from=build /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
 
