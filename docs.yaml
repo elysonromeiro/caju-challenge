@@ -1,0 +1,201 @@
+openapi: 3.1.0
+info:
+  title: "challenge API"
+  description: "challenge API"
+  version: "1.0.0"
+servers:
+  - url: "https://challenge"
+paths:
+  /v1/auth/user:
+    post:
+      summary: "Autoriza um usuário"
+      description: "Retorna o accessToken do usuário"
+      operationId: "authorization"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserToAuth"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Login"
+  /v1/users:
+    post:
+      summary: "POST v1/users"
+      operationId: "createUser"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserToCreateDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/User"
+  /v1/users/me:
+    get:
+      summary: "GET v1/users/me"
+      operationId: "me"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/User"
+  /v1/balances/add-credits:
+    post:
+      summary: "Adiciona créditos para o usuário"
+      description: "retorna o saldo atualizado"
+      operationId: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreditToAddDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Balance"
+  /v1/transactions:
+    post:
+      summary: "POST v1/transactions"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionToCreateDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TransactionCreatedDto"
+components:
+  schemas:
+    UserToAuth:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        password:
+          type: "string"
+      required:
+        - "email"
+        - "password"
+    Login:
+      type: "object"
+      properties:
+        accessToken:
+          type: "string"
+    UserToCreateDto:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        email:
+          type: "string"
+        pass:
+          type: "string"
+      required:
+        - "name"
+        - "email"
+        - "pass"
+    Balance:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        name:
+          type: "string"
+        amount:
+          type: "integer"
+          format: "int32"
+        kind:
+          type: "string"
+          enum:
+            - "FOOD"
+            - "MEAL"
+            - "CASH"
+        user:
+          $ref: "#/components/schemas/User"
+      required:
+        - "name"
+        - "kind"
+    User:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        name:
+          type: "string"
+        email:
+          type: "string"
+        pass:
+          type: "string"
+        balances:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Balance"
+      required:
+        - "name"
+        - "email"
+        - "pass"
+        - "balances"
+    CreditToAddDto:
+      type: "object"
+      properties:
+        kind:
+          type: "string"
+          enum:
+            - "FOOD"
+            - "MEAL"
+            - "CASH"
+        amountToAdd:
+          type: "integer"
+          format: "int32"
+      required:
+        - "kind"
+    TransactionToCreateDto:
+      type: "object"
+      properties:
+        account:
+          type: "string"
+        totalAmount:
+          type: "number"
+          format: "double"
+        mcc:
+          type: "string"
+        merchant:
+          type: "string"
+      required:
+        - "account"
+        - "mcc"
+        - "merchant"
+    TransactionCreatedDto:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        success:
+          type: "boolean"
+        code:
+          type: "string"
+      required:
+        - "code"

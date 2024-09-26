@@ -28,6 +28,8 @@ class SecurityConfig(val securityFilter: SecurityFilter) {
             .sessionManagement { sessionManagement -> SessionCreationPolicy.STATELESS }
             .authorizeHttpRequests { auth ->
                 auth
+                    .requestMatchers(HttpMethod.GET, "/swagger-ui.html")
+                    .permitAll()
                     .requestMatchers(HttpMethod.POST, "/v1/users", "/v1/auth/user")
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/v1/auth/user")

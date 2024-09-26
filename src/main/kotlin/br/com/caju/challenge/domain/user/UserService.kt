@@ -14,7 +14,4 @@ class UserService(val createUserUseCase: CreateUserUseCase, val meUseCase: MeUse
 
 
     fun me(): User = meUseCase.execute("")
-
-    fun <T : Any> Optional<out T>.toList(): List<T> =
-        if (isPresent) listOf(get()) else emptyList()
 }

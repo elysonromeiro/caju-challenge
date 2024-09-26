@@ -11,37 +11,35 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
-class SecurityFilter(val tokenService: TokenService, val userRepository: UserRepository): OncePerRequestFilter() {
-    override fun doFilterInternal(
+class SecurityFilter(val tokenService: TokenService, val userRepository: UserRepository) : OncePerRequestFilter() {
+    public override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val token: String? = bearerToken(request);
-        if(token != null) {
-            val subject = tokenService.getSubject(token);
-            val user = userRepository.findByEmail(subject);
+        val token: String? = bearerToken(request)
+        if (token != null) {
+            val subject = tokenService.getSubject(token)
+            val user = userRepository.findByEmail(subject)
 
-            if(user == null) {
-                throw RuntimeException("invalid token") as Throwable;
+            if (user == null) {
+                throw RuntimeException("invalid token") as Throwable
             }
 
             val auth = UsernamePasswordAuthenticationToken(user, null, user.authorities)
-            SecurityContextHolder.getContext().authentication = auth;
+            SecurityContextHolder.getContext().authentication = auth
         }
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response)
     }
 
     private fun bearerToken(request: HttpServletRequest): String? {
-        val token: String? = request.getHeader("Authorization");
+        val token: String? = request.getHeader("Authorization")
 
-        if(token != null) {
-            return token.replace("Bearer ", "");
+        if (token != null) {
+            return token.replace("Bearer ", "")
         }
 
-        return null;
+        return null
     }
-
-
 }

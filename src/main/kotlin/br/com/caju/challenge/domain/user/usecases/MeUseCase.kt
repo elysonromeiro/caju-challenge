@@ -21,7 +21,7 @@ class MeUseCase(val userRepository: UserRepository) : IUseCase<Any, User>, Exten
             throw EntityNotFoundException()
         }
 
-        logBegin(user)
+        logResult(user)
 
         return user
     }
